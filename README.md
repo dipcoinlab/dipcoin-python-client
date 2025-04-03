@@ -27,3 +27,13 @@ Deactivate the virtual environment:
 ```bash
 deactivate
 ```
+
+## Get started
+
+## For developer
+
+### doc server
+
+```bash
+mkdocs serve
+```
