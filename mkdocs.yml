@@ -21,7 +21,7 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/your-username/your-repo
+      link: https://github.com/dipcoinlab/dipcoin-python-client.git
       name: GitHub
       target: _blank
       rel: noopener noreferrer
@@ -35,6 +35,6 @@ plugins:
           paths: [dipcoin]
 
 nav:
-  - Get Started: get_started.md
+  - Get Started: index.md
   - Tutorial: tutorials.md
   - Reference: reference.md
