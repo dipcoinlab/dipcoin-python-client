@@ -6,7 +6,7 @@ authors = ["Pause <101114886+pause125@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.13,<4.0"
+python = ">=3.11,<4.0"
 pysui = "^0.81.0"
 requests = "^2.31.0"
 pydantic = "^2.11.1"
