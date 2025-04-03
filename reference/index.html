@@ -1,0 +1,897 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../tutorials/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
+    
+    
+      
+        <title>Reference - DipCoin Python Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="DipCoin Python Docs" class="md-header__button md-logo" aria-label="DipCoin Python Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DipCoin Python Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../get_started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Get Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tutorials/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorial
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Reference
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="DipCoin Python Docs" class="md-nav__button md-logo" aria-label="DipCoin Python Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DipCoin Python Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../get_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Get Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorial
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dipcoinclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      DipcoinClient
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DipcoinClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_pool
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_pool_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_pool_id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_liquidity" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_liquidity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove_liquidity" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove_liquidity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swap_exact_in" class="md-nav__link">
+    <span class="md-ellipsis">
+      swap_exact_in
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swap_exact_out" class="md-nav__link">
+    <span class="md-ellipsis">
+      swap_exact_out
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pool
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constants
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dipcoinclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      DipcoinClient
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DipcoinClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_pool
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_pool_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_pool_id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_liquidity" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_liquidity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove_liquidity" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove_liquidity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swap_exact_in" class="md-nav__link">
+    <span class="md-ellipsis">
+      swap_exact_in
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swap_exact_out" class="md-nav__link">
+    <span class="md-ellipsis">
+      swap_exact_out
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pool
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constants
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="api-reference">API Reference</h1>
+<p>This document provides detailed information about all available classes and methods in the DipCoin SDK.</p>
+<h2 id="dipcoinclient">DipcoinClient</h2>
+<p>The main client class for interacting with the DipCoin Protocol.</p>
+<pre><code class="language-python">from dipcoin import DipcoinClient
+</code></pre>
+<h3 id="constructor">Constructor</h3>
+<pre><code class="language-python">def __init__(self, network: str = &quot;testnet&quot;)
+</code></pre>
+<p>A client for interacting with the DipCoin Protocol on Sui blockchain.</p>
+<p>This client provides methods to interact with DipCoin's liquidity pools,
+including adding/removing liquidity and performing swaps.</p>
+<p><strong>Attributes:</strong>
+- <code>network</code> (str): The network to connect to (e.g., "testnet", "mainnet")
+- <code>client</code> (AsyncGqlClient): The Sui GraphQL client instance</p>
+<h3 id="methods">Methods</h3>
+<h4 id="get_pool">get_pool</h4>
+<pre><code class="language-python">async def get_pool(self, pool_id: str) -&gt; Pool | None
+</code></pre>
+<p>Retrieve information about a specific liquidity pool.</p>
+<p><strong>Parameters:</strong>
+- <code>pool_id</code> (str): The unique identifier of the pool to query.</p>
+<p><strong>Returns:</strong>
+- <code>Pool | None</code>: A Pool object containing the pool's information if found,
+                None if the pool doesn't exist.</p>
+<p><strong>Raises:</strong>
+- <code>Exception</code>: If there's an error parsing the pool data or an unknown error occurs.</p>
+<h4 id="get_pool_id">get_pool_id</h4>
+<pre><code class="language-python">async def get_pool_id(self, coin_x_type: str, coin_y_type: str) -&gt; str | None
+</code></pre>
+<p>Get the pool ID for a given pair of tokens.</p>
+<p><strong>Parameters:</strong>
+- <code>coin_x_type</code> (str): The type of the first token in the pair.
+- <code>coin_y_type</code> (str): The type of the second token in the pair.</p>
+<p><strong>Returns:</strong>
+- <code>str | None</code>: The pool ID if found, None if no pool exists for the given pair.</p>
+<h4 id="add_liquidity">add_liquidity</h4>
+<pre><code class="language-python">async def add_liquidity(
+    self,
+    pool_id: str,
+    coin_x_type: str,
+    coin_y_type: str,
+    coin_x_amount: int,
+    coin_y_amount: int,
+    slippage: float = DEFAULT_SLIPPAGE,
+) -&gt; Dict[str, Any]
+</code></pre>
+<p>Add liquidity to a pool.</p>
+<p>This method allows users to provide liquidity to a pool by depositing both tokens
+in the pair. The amounts are automatically adjusted to maintain the pool's price ratio.</p>
+<p><strong>Parameters:</strong>
+- <code>pool_id</code> (str): The ID of the pool to add liquidity to.
+- <code>coin_x_type</code> (str): The type of the first token.
+- <code>coin_y_type</code> (str): The type of the second token.
+- <code>coin_x_amount</code> (int): The amount of the first token to deposit.
+- <code>coin_y_amount</code> (int): The amount of the second token to deposit.
+- <code>slippage</code> (float, optional): The maximum acceptable slippage in percentage.
+                              Defaults to DEFAULT_SLIPPAGE (0.5%).</p>
+<p><strong>Returns:</strong>
+- <code>Dict[str, Any]</code>: A dictionary containing:
+    - <code>tx_id</code> (str): The transaction ID if successful, empty string if failed
+    - <code>status</code> (bool): True if the transaction was successful, False otherwise
+    - <code>error</code> (str, optional): Error message if the transaction failed</p>
+<p><strong>Raises:</strong>
+- <code>ValueError</code>: If amounts are invalid or slippage is out of range</p>
+<h4 id="remove_liquidity">remove_liquidity</h4>
+<pre><code class="language-python">async def remove_liquidity(
+    self,
+    pool_id: str,
+    coin_x_type: str,
+    coin_y_type: str,
+    lp_amount: int,
+) -&gt; Dict[str, Any]
+</code></pre>
+<p>Remove liquidity from a pool.</p>
+<p><strong>Parameters:</strong>
+- <code>pool_id</code> (str): The ID of the pool to remove liquidity from.
+- <code>coin_x_type</code> (str): The type of the first token.
+- <code>coin_y_type</code> (str): The type of the second token.
+- <code>lp_amount</code> (int): The amount of LP tokens to burn.</p>
+<p><strong>Returns:</strong>
+- <code>Dict[str, Any]</code>: A dictionary containing:
+    - <code>tx_id</code> (str): The transaction ID if successful, empty string if failed
+    - <code>status</code> (bool): True if the transaction was successful, False otherwise
+    - <code>error</code> (str, optional): Error message if the transaction failed</p>
+<h4 id="swap_exact_in">swap_exact_in</h4>
+<pre><code class="language-python">async def swap_exact_in(
+    self,
+    pool_id: str,
+    coin_in_type: str,
+    coin_out_type: str,
+    amount_in: int,
+    slippage: float = DEFAULT_SLIPPAGE,
+) -&gt; Dict[str, Any]
+</code></pre>
+<p>Perform a swap with exact input amount.</p>
+<p><strong>Parameters:</strong>
+- <code>pool_id</code> (str): The ID of the pool to perform the swap in.
+- <code>coin_in_type</code> (str): The type of the input token.
+- <code>coin_out_type</code> (str): The type of the output token.
+- <code>amount_in</code> (int): The exact amount of input tokens to spend.
+- <code>slippage</code> (float, optional): The maximum acceptable slippage in percentage.
+                              Defaults to DEFAULT_SLIPPAGE (0.5%).</p>
+<p><strong>Returns:</strong>
+- <code>Dict[str, Any]</code>: A dictionary containing:
+    - <code>tx_id</code> (str): The transaction ID if successful, empty string if failed
+    - <code>status</code> (bool): True if the transaction was successful, False otherwise
+    - <code>error</code> (str, optional): Error message if the transaction failed</p>
+<h4 id="swap_exact_out">swap_exact_out</h4>
+<pre><code class="language-python">async def swap_exact_out(
+    self,
+    pool_id: str,
+    coin_in_type: str,
+    coin_out_type: str,
+    amount_out: int,
+    slippage: float = DEFAULT_SLIPPAGE,
+) -&gt; Dict[str, Any]
+</code></pre>
+<p>Perform a swap with exact output amount.</p>
+<p><strong>Parameters:</strong>
+- <code>pool_id</code> (str): The ID of the pool to perform the swap in.
+- <code>coin_in_type</code> (str): The type of the input token.
+- <code>coin_out_type</code> (str): The type of the output token.
+- <code>amount_out</code> (int): The exact amount of output tokens to receive.
+- <code>slippage</code> (float, optional): The maximum acceptable slippage in percentage.
+                              Defaults to DEFAULT_SLIPPAGE (0.5%).</p>
+<p><strong>Returns:</strong>
+- <code>Dict[str, Any]</code>: A dictionary containing:
+    - <code>tx_id</code> (str): The transaction ID if successful, empty string if failed
+    - <code>status</code> (bool): True if the transaction was successful, False otherwise
+    - <code>error</code> (str, optional): Error message if the transaction failed</p>
+<h2 id="types">Types</h2>
+<h3 id="pool">Pool</h3>
+<p>A class representing a liquidity pool in the DipCoin Protocol.</p>
+<p><strong>Attributes:</strong>
+- <code>bal_x</code> (Decimal): The balance of the first token in the pool
+- <code>bal_y</code> (Decimal): The balance of the second token in the pool
+- <code>lp_supply</code> (Decimal): The total supply of LP tokens
+- <code>fee</code> (Decimal): The pool's fee rate</p>
+<p><strong>Methods:</strong>
+- <code>from_gql_response(cls, response)</code>: Create a Pool instance from a GraphQL response</p>
+<h2 id="constants">Constants</h2>
+<ul>
+<li><code>DEFAULT_SLIPPAGE</code>: The default slippage tolerance (0.5%)</li>
+<li><code>CONTRACT_CONSTANTS</code>: A dictionary containing contract addresses and IDs for different networks</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
