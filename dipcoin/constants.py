@@ -17,10 +17,9 @@ CONTRACT_CONSTANTS = {
     )
 }
 
-POOLS = {
-    "testnet": {
-        "USDC_WSOL": "0x40b7f495f9933ed2f2e493a4f95876c2f2e9453dd67b877290d5df2aa4157aaf",
-    }
+NODE_RPC = {
+    'testnet': 'https://fullnode.testnet.sui.io:443',
+    'mainnet': 'https://fullnode.mainnet.sui.io:443',
 }
 
 TESTNET_FAUCET = {

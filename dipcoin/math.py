@@ -1,15 +1,20 @@
-from decimal import Decimal
 
-def mul_div(a: Decimal, b: Decimal, c: Decimal) -> Decimal:
+
+# Constants
+FEE_SCALE = 10000
+MAX_FEE_RATE = 10000
+U64_MAX = 2**64 - 1
+
+def mul_div(a: int, b: int, c: int) -> int:
     """Multiply a and b, then divide by c."""
-    return (a * b) / c
+    return (a * b) // c
 
 def calc_optimal_coin_values(
-    coin_x_desired: Decimal,
-    coin_y_desired: Decimal,
-    coin_x_reserve: Decimal,
-    coin_y_reserve: Decimal
-) -> tuple[Decimal, Decimal]:
+    coin_x_desired: int,
+    coin_y_desired: int,
+    coin_x_reserve: int,
+    coin_y_reserve: int
+) -> tuple[int, int]:
     """
     Calculate optimal token amounts when adding liquidity
     
@@ -20,7 +25,7 @@ def calc_optimal_coin_values(
         coin_y_reserve: Current Y coin reserve in pool
         
     Returns:
-        tuple[Decimal, Decimal]: Actual amount of (X coin, Y coin) to add
+        tuple[int, int]: Actual amount of (X coin, Y coin) to add
         
     Raises:
         ValueError: When the calculation result exceeds the limit
@@ -38,12 +43,8 @@ def calc_optimal_coin_values(
         return coin_x_returned, coin_y_desired
 
 
-# Constants
-FEE_SCALE = Decimal('10000')
-MAX_FEE_RATE = Decimal('10000')
-U64_MAX = Decimal('18446744073709551615')  # 2^64 - 1
 
-def get_amount_out(fee_rate: Decimal, amount_in: Decimal, reserve_in: Decimal, reserve_out: Decimal) -> Decimal:
+def get_amount_out(fee_rate: int, amount_in: int, reserve_in: int, reserve_out: int) -> int:
     """
     Calculate output amount for a swap
     
@@ -54,16 +55,16 @@ def get_amount_out(fee_rate: Decimal, amount_in: Decimal, reserve_in: Decimal, r
         reserve_out: Output token reserve
         
     Returns:
-        Decimal: Output amount
+        int: Output amount
         
     Raises:
         ValueError: If parameters are invalid
     """
     # If fee_rate = 0, amount_out = y*amount_in/(x + amount_in)
     if fee_rate == 0:
-        result = (reserve_out * amount_in) / (reserve_in + amount_in)
-        print("getAmountOut result:", int(result))
-        return int(result)
+        result = (reserve_out * amount_in) // (reserve_in + amount_in)
+        print("getAmountOut result:", result)
+        return result
 
     if fee_rate > MAX_FEE_RATE:
         raise ValueError("Invalid fee rate")
@@ -77,13 +78,13 @@ def get_amount_out(fee_rate: Decimal, amount_in: Decimal, reserve_in: Decimal, r
     new_reserve_in = reserve_in * FEE_SCALE + coin_in_val_after_fees
 
     numerator = coin_in_val_after_fees * reserve_out
-    amount_out = int(numerator / new_reserve_in)
+    amount_out = numerator // new_reserve_in
 
     if amount_out > U64_MAX:
         raise ValueError("U64 overflow")
     return amount_out
 
-def get_amount_in(fee_rate: Decimal, amount_out: Decimal, reserve_in: Decimal, reserve_out: Decimal) -> Decimal:
+def get_amount_in(fee_rate: int, amount_out: int, reserve_in: int, reserve_out: int) -> int:
     """
     Calculate input amount for a swap
     
@@ -94,7 +95,7 @@ def get_amount_in(fee_rate: Decimal, amount_out: Decimal, reserve_in: Decimal, r
         reserve_out: Output token reserve
         
     Returns:
-        Decimal: Required input amount
+        int: Required input amount
         
     Raises:
         ValueError: If parameters are invalid
@@ -109,7 +110,7 @@ def get_amount_in(fee_rate: Decimal, amount_out: Decimal, reserve_in: Decimal, r
     fee_multiplier = FEE_SCALE - fee_rate
     numerator = reserve_in * amount_out * FEE_SCALE
     denominator = (reserve_out - amount_out) * fee_multiplier
-    amount_in = int(numerator / denominator) + 1
+    amount_in = (numerator // denominator) + 1
 
     if amount_in > U64_MAX:
         raise ValueError("U64 overflow")

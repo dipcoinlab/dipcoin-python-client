@@ -7,13 +7,16 @@ DipCoin Python SDK is a powerful and easy-to-use library for interacting with th
 - 🔄 Liquidity Pool Management
   - Add liquidity to pools
   - Remove liquidity from pools
-  - Query pool information
+  - Query pool information and IDs
 - 💱 Token Swaps
-  - Exact input swaps
-  - Exact output swaps
+  - Exact input swaps (swap_exact_in)
+  - Exact output swaps (swap_exact_out)
 - 🔍 Pool Discovery
   - Find pool IDs for token pairs
   - Query pool details and statistics
+- ⚡ Transaction Management
+  - Automatic coin splitting and merging
+  - Transaction execution and status tracking
 
 ## Installation
 
@@ -37,7 +40,6 @@ async def main():
     
     # Add liquidity to a pool
     result = await client.add_liquidity(
-        pool_id="your_pool_id",
         coin_x_type="0x2::sui::SUI",
         coin_y_type="0x2::usdc::USDC",
         coin_x_amount=1000000000,  # 1 SUI
@@ -47,7 +49,6 @@ async def main():
     
     # Perform a swap
     swap_result = await client.swap_exact_in(
-        pool_id="your_pool_id",
         coin_in_type="0x2::sui::SUI",
         coin_out_type="0x2::usdc::USDC",
         amount_in=1000000000,      # 1 SUI

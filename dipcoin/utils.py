@@ -49,6 +49,10 @@ def sort_type(coin_x_type: str, coin_y_type: str) -> list[str, str]:
 
 def format_lp_name(coin_x_type: str, coin_y_type: str) -> str:
     """Format LP name"""
+    if coin_x_type.startswith('0x'):
+        coin_x_type = coin_x_type[2:]
+    if coin_y_type.startswith('0x'):
+        coin_y_type = coin_y_type[2:]
     if is_type_x_smaller_than_type_y(coin_x_type, coin_y_type):
         return f"LP-{coin_x_type}-{coin_y_type}"
     else:

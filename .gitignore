@@ -4,3 +4,5 @@ __pycache__/
 *.pyd
 *.pyw
 *.pyz
+site/
+.pytest_cache/

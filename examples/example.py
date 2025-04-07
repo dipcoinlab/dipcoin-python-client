@@ -1,42 +1,43 @@
 import asyncio
 import dipcoin
-from dipcoin.constants import CONTRACT_CONSTANTS, TESTNET_FAUCET, POOLS
+from dipcoin.constants import CONTRACT_CONSTANTS, TESTNET_FAUCET
 
 async def test_pool(client: dipcoin.DipcoinClient):
-    instance = await client.get_pool_id(TESTNET_FAUCET['COIN_USDC'], TESTNET_FAUCET['COIN_WSOL'])
-    print(instance)
+    print("Testing pool")
+    print(await client.get_pool_id(TESTNET_FAUCET['COIN_USDC'], TESTNET_FAUCET['COIN_WSOL']))
 
 async def test_add_liquidity(client: dipcoin.DipcoinClient):
-    pool_id = POOLS['testnet']['USDC_WSOL']
+    print("Testing add liquidity")
     coin_x_type = TESTNET_FAUCET['COIN_USDC']
     coin_y_type = TESTNET_FAUCET['COIN_WSOL']
-    instance = await client.add_liquidity(pool_id, coin_x_type, coin_y_type, 1000000, 1000000)
-    print(instance)
+    print(await client.add_liquidity(coin_x_type, coin_y_type, 1000000, 1000000))
 
 async def test_remove_liquidity(client: dipcoin.DipcoinClient):
-    pool_id = POOLS['testnet']['USDC_WSOL']
+    print("Testing remove liquidity")
     coin_x_type = TESTNET_FAUCET['COIN_USDC']
     coin_y_type = TESTNET_FAUCET['COIN_WSOL']
-    instance = await client.remove_liquidity(pool_id, coin_x_type, coin_y_type, 100000)
-    print(instance)
+    print(await client.remove_liquidity(coin_x_type, coin_y_type, 100000))
 
 async def test_swap_exact_in(client: dipcoin.DipcoinClient):
-    pool_id = POOLS['testnet']['USDC_WSOL']
-    print(await client.swap_exact_in(pool_id, TESTNET_FAUCET['COIN_USDC'], TESTNET_FAUCET['COIN_WSOL'], 100000))
-    print(await client.swap_exact_in(pool_id, TESTNET_FAUCET['COIN_WSOL'], TESTNET_FAUCET['COIN_USDC'], 200000))
+    print("Testing swap exact in")
+    print(await client.swap_exact_in(TESTNET_FAUCET['COIN_USDC'], TESTNET_FAUCET['COIN_WSOL'], 100000))
+    print(await client.swap_exact_in(TESTNET_FAUCET['COIN_WSOL'], TESTNET_FAUCET['COIN_USDC'], 200000))
 
 async def test_swap_exact_out(client: dipcoin.DipcoinClient):
-    pool_id = POOLS['testnet']['USDC_WSOL']
-    print(await client.swap_exact_out(pool_id, TESTNET_FAUCET['COIN_USDC'], TESTNET_FAUCET['COIN_WSOL'], 100000))
-    print(await client.swap_exact_out(pool_id, TESTNET_FAUCET['COIN_WSOL'], TESTNET_FAUCET['COIN_USDC'], 200000))
+    print("Testing swap exact out")
+    print(await client.swap_exact_out(TESTNET_FAUCET['COIN_USDC'], TESTNET_FAUCET['COIN_WSOL'], 100000))
+    print(await client.swap_exact_out(TESTNET_FAUCET['COIN_WSOL'], TESTNET_FAUCET['COIN_USDC'], 200000))
+    
+async def test_all(client: dipcoin.DipcoinClient):
+    await test_pool(client)
+    await test_add_liquidity(client)
+    await test_remove_liquidity(client)
+    await test_swap_exact_in(client)
+    await test_swap_exact_out(client)
 
 if __name__ == "__main__":
     client = dipcoin.DipcoinClient()
-    # asyncio.run(test_add_liquidity(client))
-    # asyncio.run(test_remove_liquidity(client))
-    # asyncio.run(test_swap_exact_in(client))
-    asyncio.run(test_swap_exact_out(client))
-
+    asyncio.run(test_all(client))
 
 
 

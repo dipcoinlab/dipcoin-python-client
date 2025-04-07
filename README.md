@@ -32,8 +32,14 @@ deactivate
 
 ## For developer
 
-### doc server
+### Run doc server
 
 ```bash
 mkdocs serve
+```
+
+### Unit tests
+
+```bash
+pytest tests/* -v
 ```

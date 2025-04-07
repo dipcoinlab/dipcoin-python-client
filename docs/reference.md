@@ -1,2 +1,3 @@
 
 ::: dipcoin.client
+::: dipcoin.types
