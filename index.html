@@ -538,13 +538,16 @@
 <li>🔄 Liquidity Pool Management</li>
 <li>Add liquidity to pools</li>
 <li>Remove liquidity from pools</li>
-<li>Query pool information</li>
+<li>Query pool information and IDs</li>
 <li>💱 Token Swaps</li>
-<li>Exact input swaps</li>
-<li>Exact output swaps</li>
+<li>Exact input swaps (swap_exact_in)</li>
+<li>Exact output swaps (swap_exact_out)</li>
 <li>🔍 Pool Discovery</li>
 <li>Find pool IDs for token pairs</li>
 <li>Query pool details and statistics</li>
+<li>⚡ Transaction Management</li>
+<li>Automatic coin splitting and merging</li>
+<li>Transaction execution and status tracking</li>
 </ul>
 <h2 id="installation">Installation</h2>
 <pre><code class="language-bash">pip install dipcoin
@@ -562,7 +565,6 @@ async def main():
 
     # Add liquidity to a pool
     result = await client.add_liquidity(
-        pool_id=&quot;your_pool_id&quot;,
         coin_x_type=&quot;0x2::sui::SUI&quot;,
         coin_y_type=&quot;0x2::usdc::USDC&quot;,
         coin_x_amount=1000000000,  # 1 SUI
@@ -572,7 +574,6 @@ async def main():
 
     # Perform a swap
     swap_result = await client.swap_exact_in(
-        pool_id=&quot;your_pool_id&quot;,
         coin_in_type=&quot;0x2::sui::SUI&quot;,
         coin_out_type=&quot;0x2::usdc::USDC&quot;,
         amount_in=1000000000,      # 1 SUI

@@ -659,7 +659,6 @@ async def add_liquidity_example():
     client = DipcoinClient()
 
     # Pool parameters
-    pool_id = &quot;your_pool_id&quot;
     coin_x_type = &quot;0x2::sui::SUI&quot;
     coin_y_type = &quot;0x2::usdc::USDC&quot;
 
@@ -669,7 +668,6 @@ async def add_liquidity_example():
 
     # Add liquidity with 0.5% slippage tolerance
     result = await client.add_liquidity(
-        pool_id=pool_id,
         coin_x_type=coin_x_type,
         coin_y_type=coin_y_type,
         coin_x_amount=coin_x_amount,
@@ -677,10 +675,10 @@ async def add_liquidity_example():
         slippage=0.005
     )
 
-    if result[&quot;status&quot;]:
-        print(f&quot;Successfully added liquidity! Transaction ID: {result['tx_id']}&quot;)
+    if result.status:
+        print(f&quot;Successfully added liquidity! Transaction ID: {result.digest}&quot;)
     else:
-        print(f&quot;Failed to add liquidity: {result.get('error')}&quot;)
+        print(f&quot;Failed to add liquidity: {result.error}&quot;)
 </code></pre>
 <h3 id="removing-liquidity">Removing Liquidity</h3>
 <p>To remove liquidity from a pool:</p>
@@ -690,7 +688,6 @@ async def remove_liquidity_example():
     client = DipcoinClient()
 
     # Pool parameters
-    pool_id = &quot;your_pool_id&quot;
     coin_x_type = &quot;0x2::sui::SUI&quot;
     coin_y_type = &quot;0x2::usdc::USDC&quot;
 
@@ -699,16 +696,15 @@ async def remove_liquidity_example():
 
     # Remove liquidity
     result = await client.remove_liquidity(
-        pool_id=pool_id,
         coin_x_type=coin_x_type,
         coin_y_type=coin_y_type,
         lp_amount=lp_amount
     )
 
-    if result[&quot;status&quot;]:
-        print(f&quot;Successfully removed liquidity! Transaction ID: {result['tx_id']}&quot;)
+    if result.status:
+        print(f&quot;Successfully removed liquidity! Transaction ID: {result.digest}&quot;)
     else:
-        print(f&quot;Failed to remove liquidity: {result.get('error')}&quot;)
+        print(f&quot;Failed to remove liquidity: {result.error}&quot;)
 </code></pre>
 <h2 id="performing-swaps">Performing Swaps</h2>
 <h3 id="exact-input-swap">Exact Input Swap</h3>
@@ -718,8 +714,7 @@ async def remove_liquidity_example():
 async def exact_input_swap():
     client = DipcoinClient()
 
-    # Pool parameters
-    pool_id = &quot;your_pool_id&quot;
+    # Token types
     coin_in_type = &quot;0x2::sui::SUI&quot;
     coin_out_type = &quot;0x2::usdc::USDC&quot;
 
@@ -728,17 +723,16 @@ async def exact_input_swap():
 
     # Perform the swap with 0.5% slippage tolerance
     result = await client.swap_exact_in(
-        pool_id=pool_id,
         coin_in_type=coin_in_type,
         coin_out_type=coin_out_type,
         amount_in=amount_in,
         slippage=0.005
     )
 
-    if result[&quot;status&quot;]:
-        print(f&quot;Swap successful! Transaction ID: {result['tx_id']}&quot;)
+    if result.status:
+        print(f&quot;Swap successful! Transaction ID: {result.digest}&quot;)
     else:
-        print(f&quot;Swap failed: {result.get('error')}&quot;)
+        print(f&quot;Swap failed: {result.error}&quot;)
 </code></pre>
 <h3 id="exact-output-swap">Exact Output Swap</h3>
 <p>When you know exactly how much of the output token you want to receive:</p>
@@ -747,8 +741,7 @@ async def exact_input_swap():
 async def exact_output_swap():
     client = DipcoinClient()
 
-    # Pool parameters
-    pool_id = &quot;your_pool_id&quot;
+    # Token types
     coin_in_type = &quot;0x2::sui::SUI&quot;
     coin_out_type = &quot;0x2::usdc::USDC&quot;
 
@@ -757,47 +750,59 @@ async def exact_output_swap():
 
     # Perform the swap with 0.5% slippage tolerance
     result = await client.swap_exact_out(
-        pool_id=pool_id,
         coin_in_type=coin_in_type,
         coin_out_type=coin_out_type,
         amount_out=amount_out,
         slippage=0.005
     )
 
-    if result[&quot;status&quot;]:
-        print(f&quot;Swap successful! Transaction ID: {result['tx_id']}&quot;)
+    if result.status:
+        print(f&quot;Swap successful! Transaction ID: {result.digest}&quot;)
     else:
-        print(f&quot;Swap failed: {result.get('error')}&quot;)
+        print(f&quot;Swap failed: {result.error}&quot;)
 </code></pre>
 <h2 id="error-handling">Error Handling</h2>
 <p>The SDK provides detailed error information when operations fail. Here's how to handle errors properly:</p>
 <pre><code class="language-python">from dipcoin import DipcoinClient
+from dipcoin.exceptions import PoolNotFound
 
 async def error_handling_example():
     client = DipcoinClient()
 
     try:
         result = await client.add_liquidity(
-            pool_id=&quot;invalid_pool_id&quot;,
             coin_x_type=&quot;0x2::sui::SUI&quot;,
             coin_y_type=&quot;0x2::usdc::USDC&quot;,
             coin_x_amount=1000000000,
             coin_y_amount=1000000
         )
 
-        if not result[&quot;status&quot;]:
-            print(f&quot;Operation failed: {result.get('error')}&quot;)
+        if not result.status:
+            print(f&quot;Operation failed: {result.error}&quot;)
 
+    except PoolNotFound as e:
+        print(f&quot;Pool not found: {e.message}&quot;)
+        print(f&quot;Token pair: {e.coin_x_type}/{e.coin_y_type}&quot;)
+    except ValueError as e:
+        print(f&quot;Invalid input: {str(e)}&quot;)
     except Exception as e:
         print(f&quot;An unexpected error occurred: {str(e)}&quot;)
 </code></pre>
+<p>Common exceptions you might encounter:</p>
+<ul>
+<li><code>PoolNotFound</code>: Raised when attempting to interact with a pool that doesn't exist</li>
+<li><code>ValueError</code>: Raised for invalid input parameters (e.g., negative amounts, invalid slippage)</li>
+<li><code>Exception</code>: Raised for other unexpected errors</li>
+</ul>
 <h2 id="best-practices">Best Practices</h2>
 <ol>
-<li><strong>Always Check Transaction Status</strong>: Verify the <code>status</code> field in the result dictionary before proceeding.</li>
+<li><strong>Always Check Transaction Status</strong>: Verify the <code>status</code> field in the result object before proceeding.</li>
 <li><strong>Use Appropriate Slippage</strong>: Set slippage tolerance based on market conditions and your risk tolerance.</li>
 <li><strong>Handle Errors Gracefully</strong>: Implement proper error handling for failed transactions.</li>
 <li><strong>Use Async/Await</strong>: The SDK is built with async/await support for better performance.</li>
 <li><strong>Test on Testnet</strong>: Always test your code on testnet before deploying to mainnet.</li>
+<li><strong>Monitor Coin Balances</strong>: Ensure you have sufficient balance before performing operations.</li>
+<li><strong>Understand Token Decimals</strong>: Be aware of the decimal places for different tokens when specifying amounts.</li>
 </ol>
 
 
