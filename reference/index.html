@@ -1309,7 +1309,18 @@ including adding/removing liquidity and performing swaps.</p>
 <span class="normal">521</span>
 <span class="normal">522</span>
 <span class="normal">523</span>
-<span class="normal">524</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DipcoinClient</span><span class="p">:</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DipcoinClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A client for interacting with the Dipcoin Protocol on Sui blockchain.</span>
 
 <span class="sd">    This client provides methods to interact with Dipcoin&#39;s liquidity pools,</span>
@@ -1493,6 +1504,7 @@ including adding/removing liquidity and performing swaps.</p>
         <span class="n">coin_x_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">coin_y_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">lp_amount</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">slippage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_SLIPPAGE</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransactionResponse</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove liquidity from a pool.</span>
 
@@ -1504,13 +1516,16 @@ including adding/removing liquidity and performing swaps.</p>
 <span class="sd">            coin_x_type (str): The type of the first token in the pair.</span>
 <span class="sd">            coin_y_type (str): The type of the second token in the pair.</span>
 <span class="sd">            lp_amount (int): The amount of LP tokens to burn.</span>
-
+<span class="sd">            slippage (float, optional): The maximum acceptable slippage in percentage.</span>
+<span class="sd">                                      Defaults to 0.5%.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            TransactionResponse: A TransactionResponse object containing the transaction digest and status</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">lp_amount</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Amount must be greater than 0&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">slippage</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">slippage</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Slippage must be less than 100</span><span class="si">% a</span><span class="s2">nd greater than 0%&quot;</span><span class="p">)</span>
 
             <span class="n">coin_x_type</span><span class="p">,</span> <span class="n">coin_y_type</span><span class="p">,</span> <span class="n">lp_type</span> <span class="o">=</span> <span class="n">sort_and_get_lp_type</span><span class="p">(</span>
                 <span class="n">CONTRACT_CONSTANTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">]</span><span class="o">.</span><span class="n">package_id</span><span class="p">,</span>
@@ -1525,6 +1540,11 @@ including adding/removing liquidity and performing swaps.</p>
             <span class="n">pool</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pool</span><span class="p">(</span><span class="n">pool_id</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">pool</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Failed to get pool info&quot;</span><span class="p">)</span>
+
+            <span class="n">expected_coin_x_out</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">bal_x</span> <span class="o">*</span> <span class="n">lp_amount</span> <span class="o">//</span> <span class="n">pool</span><span class="o">.</span><span class="n">lp_supply</span>
+            <span class="n">expected_coin_y_out</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">bal_y</span> <span class="o">*</span> <span class="n">lp_amount</span> <span class="o">//</span> <span class="n">pool</span><span class="o">.</span><span class="n">lp_supply</span>
+            <span class="n">coin_x_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">expected_coin_x_out</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">slippage</span><span class="p">))</span>
+            <span class="n">coin_y_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">expected_coin_y_out</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">slippage</span><span class="p">))</span>
 
             <span class="c1"># Build transaction block</span>
             <span class="n">txn</span> <span class="o">=</span> <span class="n">SuiTransaction</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
@@ -1544,7 +1564,9 @@ including adding/removing liquidity and performing swaps.</p>
                     <span class="n">CONTRACT_CONSTANTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">]</span><span class="o">.</span><span class="n">version_id</span><span class="p">,</span>
                     <span class="n">CONTRACT_CONSTANTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">]</span><span class="o">.</span><span class="n">global_id</span><span class="p">,</span>
                     <span class="n">pool_id</span><span class="p">,</span>
-                    <span class="n">split_lp_coin</span>
+                    <span class="n">split_lp_coin</span><span class="p">,</span>
+                    <span class="n">coin_x_min</span><span class="p">,</span>
+                    <span class="n">coin_y_min</span>
                 <span class="p">],</span>
                 <span class="n">type_arguments</span><span class="o">=</span><span class="p">[</span><span class="n">coin_x_type</span><span class="p">,</span> <span class="n">coin_y_type</span><span class="p">]</span>
             <span class="p">)</span>
@@ -1577,7 +1599,7 @@ including adding/removing liquidity and performing swaps.</p>
 <span class="sd">            coin_out_type (str): The type of the output token.</span>
 <span class="sd">            amount_in (int): The exact amount of input tokens to spend.</span>
 <span class="sd">            slippage (float, optional): The maximum acceptable slippage in percentage.</span>
-<span class="sd">                                      Defaults to DEFAULT_SLIPPAGE (0.5%).</span>
+<span class="sd">                                      Defaults to 0.5%.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            TransactionResponse: A TransactionResponse object containing the transaction digest and status</span>
@@ -2561,7 +2583,7 @@ in the pair. The amounts are automatically adjusted to maintain the pool's price
 
 
 <h3 id="dipcoin.client.DipcoinClient.remove_liquidity" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">remove_liquidity</span><span class="p">(</span><span class="n">coin_x_type</span><span class="p">,</span> <span class="n">coin_y_type</span><span class="p">,</span> <span class="n">lp_amount</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">remove_liquidity</span><span class="p">(</span><span class="n">coin_x_type</span><span class="p">,</span> <span class="n">coin_y_type</span><span class="p">,</span> <span class="n">lp_amount</span><span class="p">,</span> <span class="n">slippage</span><span class="o">=</span><span class="n">DEFAULT_SLIPPAGE</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
@@ -2637,31 +2659,27 @@ to their share of the pool.</p>
                 <em>required</em>
             </td>
           </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
           <tr class="doc-section-item">
-<td><code>TransactionResponse</code></td>            <td>
-                  <code><a class="autorefs autorefs-internal" title="TransactionResponse (dipcoin.types.TransactionResponse)" href="#dipcoin.types.TransactionResponse">TransactionResponse</a></code>
+            <td>
+                <code>slippage</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A TransactionResponse object containing the transaction digest and status</p>
+                <p>The maximum acceptable slippage in percentage.
+                      Defaults to 0.5%.</p>
               </div>
+            </td>
+            <td>
+                  <code><span title="dipcoin.constants.DEFAULT_SLIPPAGE">DEFAULT_SLIPPAGE</span></code>
             </td>
           </tr>
       </tbody>
     </table>
+        <p>Returns:
+    TransactionResponse: A TransactionResponse object containing the transaction digest and status</p>
 
 
             <details class="quote">
@@ -2735,11 +2753,23 @@ to their share of the pool.</p>
 <span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
-<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">remove_liquidity</span><span class="p">(</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">remove_liquidity</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">coin_x_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">coin_y_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">lp_amount</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">slippage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_SLIPPAGE</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransactionResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove liquidity from a pool.</span>
 
@@ -2751,13 +2781,16 @@ to their share of the pool.</p>
 <span class="sd">        coin_x_type (str): The type of the first token in the pair.</span>
 <span class="sd">        coin_y_type (str): The type of the second token in the pair.</span>
 <span class="sd">        lp_amount (int): The amount of LP tokens to burn.</span>
-
+<span class="sd">        slippage (float, optional): The maximum acceptable slippage in percentage.</span>
+<span class="sd">                                  Defaults to 0.5%.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        TransactionResponse: A TransactionResponse object containing the transaction digest and status</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">lp_amount</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Amount must be greater than 0&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">slippage</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">slippage</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Slippage must be less than 100</span><span class="si">% a</span><span class="s2">nd greater than 0%&quot;</span><span class="p">)</span>
 
         <span class="n">coin_x_type</span><span class="p">,</span> <span class="n">coin_y_type</span><span class="p">,</span> <span class="n">lp_type</span> <span class="o">=</span> <span class="n">sort_and_get_lp_type</span><span class="p">(</span>
             <span class="n">CONTRACT_CONSTANTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">]</span><span class="o">.</span><span class="n">package_id</span><span class="p">,</span>
@@ -2772,6 +2805,11 @@ to their share of the pool.</p>
         <span class="n">pool</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pool</span><span class="p">(</span><span class="n">pool_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pool</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Failed to get pool info&quot;</span><span class="p">)</span>
+
+        <span class="n">expected_coin_x_out</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">bal_x</span> <span class="o">*</span> <span class="n">lp_amount</span> <span class="o">//</span> <span class="n">pool</span><span class="o">.</span><span class="n">lp_supply</span>
+        <span class="n">expected_coin_y_out</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">bal_y</span> <span class="o">*</span> <span class="n">lp_amount</span> <span class="o">//</span> <span class="n">pool</span><span class="o">.</span><span class="n">lp_supply</span>
+        <span class="n">coin_x_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">expected_coin_x_out</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">slippage</span><span class="p">))</span>
+        <span class="n">coin_y_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">expected_coin_y_out</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">slippage</span><span class="p">))</span>
 
         <span class="c1"># Build transaction block</span>
         <span class="n">txn</span> <span class="o">=</span> <span class="n">SuiTransaction</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
@@ -2791,7 +2829,9 @@ to their share of the pool.</p>
                 <span class="n">CONTRACT_CONSTANTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">]</span><span class="o">.</span><span class="n">version_id</span><span class="p">,</span>
                 <span class="n">CONTRACT_CONSTANTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">]</span><span class="o">.</span><span class="n">global_id</span><span class="p">,</span>
                 <span class="n">pool_id</span><span class="p">,</span>
-                <span class="n">split_lp_coin</span>
+                <span class="n">split_lp_coin</span><span class="p">,</span>
+                <span class="n">coin_x_min</span><span class="p">,</span>
+                <span class="n">coin_y_min</span>
             <span class="p">],</span>
             <span class="n">type_arguments</span><span class="o">=</span><span class="p">[</span><span class="n">coin_x_type</span><span class="p">,</span> <span class="n">coin_y_type</span><span class="p">]</span>
         <span class="p">)</span>
@@ -2901,7 +2941,7 @@ current price and liquidity.</p>
             <td>
               <div class="doc-md-description">
                 <p>The maximum acceptable slippage in percentage.
-                      Defaults to DEFAULT_SLIPPAGE (0.5%).</p>
+                      Defaults to 0.5%.</p>
               </div>
             </td>
             <td>
@@ -2937,18 +2977,7 @@ current price and liquidity.</p>
 
             <details class="quote">
               <summary>Source code in <code>dipcoin/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
 <span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
@@ -3027,7 +3056,18 @@ current price and liquidity.</p>
 <span class="normal">353</span>
 <span class="normal">354</span>
 <span class="normal">355</span>
-<span class="normal">356</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">swap_exact_in</span><span class="p">(</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">swap_exact_in</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">coin_in_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">coin_out_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3045,7 +3085,7 @@ current price and liquidity.</p>
 <span class="sd">        coin_out_type (str): The type of the output token.</span>
 <span class="sd">        amount_in (int): The exact amount of input tokens to spend.</span>
 <span class="sd">        slippage (float, optional): The maximum acceptable slippage in percentage.</span>
-<span class="sd">                                  Defaults to DEFAULT_SLIPPAGE (0.5%).</span>
+<span class="sd">                                  Defaults to 0.5%.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        TransactionResponse: A TransactionResponse object containing the transaction digest and status</span>
@@ -3250,18 +3290,7 @@ the pool's current price and liquidity.</p>
 
             <details class="quote">
               <summary>Source code in <code>dipcoin/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">358</span>
-<span class="normal">359</span>
-<span class="normal">360</span>
-<span class="normal">361</span>
-<span class="normal">362</span>
-<span class="normal">363</span>
-<span class="normal">364</span>
-<span class="normal">365</span>
-<span class="normal">366</span>
-<span class="normal">367</span>
-<span class="normal">368</span>
-<span class="normal">369</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">369</span>
 <span class="normal">370</span>
 <span class="normal">371</span>
 <span class="normal">372</span>
@@ -3337,7 +3366,18 @@ the pool's current price and liquidity.</p>
 <span class="normal">442</span>
 <span class="normal">443</span>
 <span class="normal">444</span>
-<span class="normal">445</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">swap_exact_out</span><span class="p">(</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">swap_exact_out</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">coin_in_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">coin_out_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>

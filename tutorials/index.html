@@ -698,7 +698,8 @@ async def remove_liquidity_example():
     result = await client.remove_liquidity(
         coin_x_type=coin_x_type,
         coin_y_type=coin_y_type,
-        lp_amount=lp_amount
+        lp_amount=lp_amount,
+        slippage=0.005
     )
 
     if result.status:
