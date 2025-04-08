@@ -197,6 +197,7 @@ class DipcoinClient:
         coin_x_type: str,
         coin_y_type: str,
         lp_amount: int,
+        slippage: float = DEFAULT_SLIPPAGE,
     ) -> TransactionResponse:
         """Remove liquidity from a pool.
         
@@ -208,13 +209,16 @@ class DipcoinClient:
             coin_x_type (str): The type of the first token in the pair.
             coin_y_type (str): The type of the second token in the pair.
             lp_amount (int): The amount of LP tokens to burn.
-        
+            slippage (float, optional): The maximum acceptable slippage in percentage.
+                                      Defaults to 0.5%.
         Returns:
             TransactionResponse: A TransactionResponse object containing the transaction digest and status
         """
         try:
             if lp_amount <= 0:
                 raise ValueError("Amount must be greater than 0")
+            if slippage >= 1.0 or slippage < 0.0:
+                raise ValueError(r"Slippage must be less than 100% and greater than 0%")
             
             coin_x_type, coin_y_type, lp_type = sort_and_get_lp_type(
                 CONTRACT_CONSTANTS[self.network].package_id,
@@ -229,6 +233,11 @@ class DipcoinClient:
             pool = await self.get_pool(pool_id)
             if not pool:
                 raise ValueError("Failed to get pool info")
+
+            expected_coin_x_out = pool.bal_x * lp_amount // pool.lp_supply
+            expected_coin_y_out = pool.bal_y * lp_amount // pool.lp_supply
+            coin_x_min = int(expected_coin_x_out * (1.0 - slippage))
+            coin_y_min = int(expected_coin_y_out * (1.0 - slippage))
 
             # Build transaction block
             txn = SuiTransaction(client=self.client)
@@ -248,7 +257,9 @@ class DipcoinClient:
                     CONTRACT_CONSTANTS[self.network].version_id,
                     CONTRACT_CONSTANTS[self.network].global_id,
                     pool_id,
-                    split_lp_coin
+                    split_lp_coin,
+                    coin_x_min,
+                    coin_y_min
                 ],
                 type_arguments=[coin_x_type, coin_y_type]
             )
@@ -281,7 +292,7 @@ class DipcoinClient:
             coin_out_type (str): The type of the output token.
             amount_in (int): The exact amount of input tokens to spend.
             slippage (float, optional): The maximum acceptable slippage in percentage.
-                                      Defaults to DEFAULT_SLIPPAGE (0.5%).
+                                      Defaults to 0.5%.
         
         Returns:
             TransactionResponse: A TransactionResponse object containing the transaction digest and status

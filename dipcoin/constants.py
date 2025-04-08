@@ -9,11 +9,11 @@ class ContractConstants(BaseModel):
 
 CONTRACT_CONSTANTS = {
     "testnet": ContractConstants(
-        package_id="0xa21247f737d7ff2b2b2a03411f4693001b24ad2e217b863d1a3dbfadee9ddd3c",
-        admin_cap_id="0x18f90fbdf9beb813b5a92131ecdc2da97e2954b92dcd893b909b196c3d2a672e",
-        version_id="0xd4d49b0915459f013072d2c10139eeacac9865fedfc71108cc98565e446370fa",
-        global_id="0x73ea415d3adb8c5ba4cc6322eaaf40f8d99ee54d979891df467ff478ba2154ff",
-        pool_registry_table_id="0xeb87cbc1fb3cdd9d645f5b8793f30a4745637800babef11d37f4fd20569d60a8",
+        package_id="0xdd07cd4192c61a81f82718e0581c3c861e43e81ca26e46ae540276b95ed8d52d",
+        admin_cap_id="0x1e291ad24506c86251dd03d94580b5292c0316c5e6c09688c4d1810b33b5ec17",
+        version_id="0x99c565e4e87576433ffab5f66f7bce0db3d5f72785eed5384e681c22311af820",
+        global_id="0x0a2ba97c9dad085366a35be0e48b51d353dc9b6e7ccfe723c4b2b56745d3e623",
+        pool_registry_table_id="0x60347e948bb7b9c7f42715f66dbe4e5e5060bae19be1483e2b6daf1364fb1e42",
     )
 }
 

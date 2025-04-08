@@ -36,7 +36,7 @@ async def test_all(client: dipcoin.DipcoinClient):
     await test_swap_exact_out(client)
 
 if __name__ == "__main__":
-    client = dipcoin.DipcoinClient()
+    client = dipcoin.DipcoinClient(network="testnet")
     asyncio.run(test_all(client))
 
 
